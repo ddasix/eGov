@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="EUC-KR"?>
+<!DOCTYPE sqlMap PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN" "http://ibatis.apache.org/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Board">
+	<typeAlias alias="board" type="com.multicampus.biz.board.vo.BoardVO"/>
+	
+	<resultMap id="boardResult" class="board">
+		<result property="seq" column="SEQ" />
+		<result property="title" column="TITLE" nullValue="" />
+		<result property="writer" column="WRITER" nullValue="" />
+		<result property="content" column="CONTENT" nullValue="" />
+		<result property="regDate" column="REGDATE" />
+		<result property="cnt" column="CNT" />
+	</resultMap>
+
+	<select id="getBoardList" 
+	        resultMap="boardResult" 
+	        parameterClass="board">
+		SELECT *
+		FROM BOARD 
+		<isEqual property="searchCondition" compareValue="TITLE">
+		WHERE TITLE LIKE #searchKeyword#
+		</isEqual>
+		<isEqual property="searchCondition" compareValue="CONTENT">
+		WHERE TITLE LIKE #searchKeyword#
+		</isEqual>
+		<isEqual property="searchCondition" compareValue="MIXED">
+		WHERE TITLE LIKE #searchKeyword# OR CONTENT LIKE #searchKeyword#
+		</isEqual>
+		ORDER BY SEQ DESC
+	</select>
+
+	<select id="getBoard" resultMap="boardResult" parameterClass="board">
+		SELECT *
+		FROM BOARD 
+		WHERE SEQ=#seq#
+	</select>
+	
+	<insert id="addBoard" parameterClass="board">
+		INSERT INTO BOARD (
+			SEQ,
+			TITLE,
+			WRITER,
+			CONTENT, 
+			REGDATE,
+			CNT
+		) VALUES (
+			(SELECT NVL(MAX(SEQ), 0)+1 FROM BOARD),
+			#title#,
+			#writer#,
+			#content#, 
+			sysdate,
+			#cnt#
+		)
+	</insert>
+	
+	<update id="updateBoard" parameterClass="board">
+		UPDATE BOARD SET
+			TITLE=#title#,
+			WRITER=#writer#,
+			CONTENT=#content#
+		WHERE SEQ=#seq#
+	</update>
+
+	<update id="updateBoardCnt" parameterClass="board">
+		UPDATE BOARD SET
+			CNT=CNT+1
+		WHERE SEQ=#seq#
+	</update>
+	
+	<delete id="deleteBoard" parameterClass="board">
+		DELETE BOARD WHERE SEQ=#seq#
+	</delete>	
+</sqlMap>
