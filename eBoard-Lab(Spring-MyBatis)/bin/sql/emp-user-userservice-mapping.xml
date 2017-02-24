@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd"> 
+
+<mapper namespace="User">
+	<!--  회원 테이블과 클래스 UserVO 매핑 -->
+	<resultMap id="userResult" type="userVO">
+		<id property="userId" column="USER_ID"/>
+		<result property="userName" column="USER_NAME"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="ssn" column="SSN"/>
+		<result property="slYn" column="SL_YN"/>
+		<result property="birthDay" column="BIRTH_DAY"/>
+		<result property="age" column="AGE"/>
+		<result property="cellPhone" column="CELL_PHONE"/>
+		<result property="addr" column="ADDR"/>
+		<result property="email" column="EMAIL"/>
+		<result property="emailYn" column="EMAIL_YN"/>
+		<result property="imageFile" column="IMAGE_FILE"/>
+		<result property="regDate" column="REG_DATE"/>
+	</resultMap>	
+	
+	<!--  Query : 회원 상세 정보 조회 -->
+	<select id="getUser" parameterType="java.lang.String" resultMap="userResult">
+		SELECT USER_ID, USER_NAME, PASSWORD, SSN, SL_YN, BIRTH_DAY, AGE, CELL_PHONE, ADDR, EMAIL, EMAIL_YN, IMAGE_FILE, REG_DATE
+		FROM USERS
+		WHERE USER_ID = #{userId} 
+	</select>						
+</mapper>

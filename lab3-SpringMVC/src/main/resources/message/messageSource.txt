@@ -1,0 +1,5 @@
+required.board.title=제목은 필수 입력항목입니다.
+required.board.writer=작성자는 필수 입력항목입니다.
+required.board.content=내용은 필수 입력항목입니다.
+
+error.board.content.tooshort=내용은 10글자 이상 작성해주세요.

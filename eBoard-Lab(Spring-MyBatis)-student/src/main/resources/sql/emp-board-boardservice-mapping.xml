@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN" "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="Board">
+	<!-- TODO 1. BOARD 테이블과 BoardVO 매핑 -->
+
+
+
+	<!-- TODO 2. 게시글 등록 쿼리 작성 -->
+	<insert id="addBoard" parameterType="boardVO">
+		INSERT INTO BOARD(	BOARDNO,	TITLE,	WRITER,	CONTENT)
+		VALUES(	#{boardNo}, #{title},	#{writer}, #{content} )
+	</insert>
+
+
+	<!-- TODO 3. 게시글 상세 정보 조회 쿼리 작성 -->
+
+
+
+	<!-- TODO 4. 검색 조건에 기반하여 게시글 목록 조회 쿼리 작성 -->
+	<select id="getBoardList" parameterType="boardVO" resultMap="boardResult">
+		SELECT BOARDNO, TITLE, WRITER, CONTENT, REGDATE, CNT
+		FROM BOARD
+		<if test="searchCondition == 0">
+			WHERE TITLE like '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 1">
+			WHERE CONTENT like '%' || #{searchKeyword}
+		</if>
+		<if test="searchCondition == 2">
+			WHERE TITLE like '%' || #{searchKeyword} || '%' OR CONTENT
+			like #{searchKeyword} || '%'
+		</if>
+		ORDER BY BOARDNO DESC
+	</select>
+
+
+	<!-- TODO 5. 검색 조건에 기반하여 게시글 갯수 조회 쿼리 작성 -->
+	<select id="getBoardListCnt" parameterType="boardVO" resultType="java.lang.Integer">
+		SELECT COUNT(*) BOARDCNT
+		FROM BOARD
+		<if test="searchCondition == 0">
+			WHERE TITLE like '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 1">
+			WHERE CONTENT like '%' || #{searchKeyword}
+		</if>
+		<if test="searchCondition == 2">
+			WHERE TITLE like '%' || #{searchKeyword} || '%' OR CONTENT
+			like #{searchKeyword} || '%'
+		</if>
+	</select>
+
+
+
+</mapper>
